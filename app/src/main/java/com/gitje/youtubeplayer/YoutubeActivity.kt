@@ -41,8 +41,14 @@ class YoutubeActivity : YouTubeBaseActivity(), YouTubePlayer.OnInitializedListen
         Log.d(TAG, "OnInitialization Success: player is ${player?.javaClass}")
         Toast.makeText(this, "Initialised YoutubePlayer successfully", Toast.LENGTH_SHORT).show()
 
+
+        player?.setPlaybackEventListener(playbackEventListener)
+        player?.setPlayerStateChangeListener(playerStateListener)
+
         if (!wasRestored)
             player?.cueVideo(YOUTUBE_VIDEO_ID)
+        else
+            player?.play()
     }
 
     override fun onInitializationFailure(
@@ -56,6 +62,54 @@ class YoutubeActivity : YouTubeBaseActivity(), YouTubePlayer.OnInitializedListen
             val errorMessage =
                 "There was an error initializing the YoutubePlayer ($youTubeInitializationResult)"
             Toast.makeText(this, errorMessage, Toast.LENGTH_LONG).show()
+        }
+    }
+
+    private val playbackEventListener = object: YouTubePlayer.PlaybackEventListener {
+        override fun onPlaying() {
+Toast.makeText(this@YoutubeActivity, "Good, video is playing ok", Toast.LENGTH_SHORT).show()
+        }
+
+        override fun onPaused() {
+            Toast.makeText(this@YoutubeActivity, "Video is paused", Toast.LENGTH_SHORT).show()
+        }
+
+        override fun onStopped() {
+
+        }
+
+        override fun onBuffering(p0: Boolean) {
+
+        }
+
+        override fun onSeekTo(p0: Int) {
+
+        }
+    }
+
+    private val playerStateListener = object : YouTubePlayer.PlayerStateChangeListener {
+        override fun onLoading() {
+
+        }
+
+        override fun onLoaded(p0: String?) {
+
+        }
+
+        override fun onAdStarted() {
+            Toast.makeText(this@YoutubeActivity, "Add here", Toast.LENGTH_SHORT).show()
+        }
+
+        override fun onVideoStarted() {
+            Toast.makeText(this@YoutubeActivity, "Video has started", Toast.LENGTH_SHORT).show()
+        }
+
+        override fun onVideoEnded() {
+            Toast.makeText(this@YoutubeActivity, "Reached the end of the video", Toast.LENGTH_SHORT).show()
+        }
+
+        override fun onError(p0: YouTubePlayer.ErrorReason?) {
+
         }
     }
 }
